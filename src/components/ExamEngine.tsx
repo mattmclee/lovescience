@@ -39,8 +39,15 @@ export default function ExamEngine({
             q.difficulty === difficulty
         );
 
-        // 3. Shuffle logic (Shuffle only on mount/selection change)
-        const shuffle = (array: Question[]) => [...array].sort(() => Math.random() - 0.5);
+        // 3. Shuffle logic (Fisher-Yates)
+        const shuffle = <T,>(array: T[]): T[] => {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        };
 
         const prevWrong = filtered.filter(q => wrongAnswerIds.includes(q.id));
         const others = filtered.filter(q => !wrongAnswerIds.includes(q.id));

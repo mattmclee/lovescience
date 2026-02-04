@@ -1,80 +1,58 @@
 import { Question } from "./data";
 
+const generateMCQs = (topicId: string, baseName: string, questionStems: { q: string, o: string[], a: string, e: string }[]) => {
+    return Array.from({ length: 30 }, (_, i) => {
+        const stem = questionStems[i % questionStems.length];
+        return {
+            id: `${topicId}_mcq_${i + 1}`,
+            topicId,
+            paper: 1 as const,
+            question: `${baseName} Topic (MCQ ${i + 1}): ${stem.q}`,
+            options: stem.o,
+            answer: stem.a,
+            explanation: stem.e,
+            difficulty: i < 5 ? "Top School" as const : "Standard" as const,
+            school: i < 5 ? "RI 2023" : undefined
+        };
+    });
+};
+
+const generateOEs = (topicId: string, baseName: string, questionStems: { q: string, a: string, e: string }[]) => {
+    return Array.from({ length: 10 }, (_, i) => {
+        const stem = questionStems[i % questionStems.length];
+        return {
+            id: `${topicId}_oe_${i + 1}`,
+            topicId,
+            paper: 2 as const,
+            question: `${baseName} Topic (OE ${i + 1}): ${stem.q}`,
+            answer: stem.a,
+            explanation: stem.e,
+            difficulty: "Standard" as const
+        };
+    });
+};
+
 export const batch1Questions: Question[] = [
-    // --- DIVERSITY OF MATTER (Topic: diversity) ---
-    // MCQs (30)
-    ...Array.from({ length: 30 }, (_, i) => ({
-        id: `div_mcq_${i + 1}`,
-        topicId: "diversity",
-        paper: 1 as const,
-        question: `Diversity Question MCQ ${i + 1}: Which of the following is a physical property of metals?`,
-        options: ["Low melting point", "Poor conductor of heat", "Ductility", "Brittle"],
-        answer: "2",
-        explanation: "Metals are typically ductile, meaning they can be drawn into wires.",
-        difficulty: i % 5 === 0 ? "Top School" as const : "Standard" as const,
-        school: i % 5 === 0 ? "HCI 2022" : undefined
-    })),
-    // Open-ended (10)
-    ...Array.from({ length: 10 }, (_, i) => ({
-        id: `div_oe_${i + 1}`,
-        topicId: "diversity",
-        paper: 2 as const,
-        question: `Diversity Open-ended Question ${i + 1}: Explain why salt can be separated from a salt-water mixture using evaporation.`,
-        answer: "Evaporation involves heating the mixture until the solvent (water) turns into vapour, leaving behind the non-volatile solute (salt) which has a much higher boiling point.",
-        explanation: "Keywords: Boiling point difference, non-volatile, solute, solvent.",
-        difficulty: "Standard" as const
-    })),
-
-    // --- RAY MODEL OF LIGHT (Topic: light) ---
-    // MCQs (30)
-    ...Array.from({ length: 30 }, (_, i) => ({
-        id: `light_mcq_${i + 1}`,
-        topicId: "light",
-        paper: 1 as const,
-        question: `Light Question MCQ ${i + 1}: When light travels from air into a glass block, it bends towards the normal. This is because...`,
-        options: [
-            "Light speeds up in glass",
-            "Light slows down in glass",
-            "The density of glass is lower than air",
-            "Light is reflected at the surface"
-        ],
-        answer: "1",
-        explanation: "Refraction occurs because light slows down in a denser medium like glass, causing it to bend towards the normal.",
-        difficulty: i % 7 === 0 ? "Top School" as const : "Standard" as const,
-        school: i % 7 === 0 ? "RI 2023" : undefined
-    })),
-    // Open-ended (10)
-    ...Array.from({ length: 10 }, (_, i) => ({
-        id: `light_oe_${i + 1}`,
-        topicId: "light",
-        paper: 2 as const,
-        question: `Light Open-ended Question ${i + 1}: Describe the characteristics of an image formed by a plane mirror.`,
-        answer: "The image is virtual, upright, laterally inverted, the same size as the object, and at the same distance behind the mirror as the object is in front.",
-        explanation: "Keywords: Virtual, upright, laterally inverted, same size, same distance.",
-        difficulty: "Standard" as const
-    })),
-
-    // --- MODEL OF CELLS (Topic: cells) ---
-    // MCQs (30)
-    ...Array.from({ length: 30 }, (_, i) => ({
-        id: `cell_mcq_${i + 1}`,
-        topicId: "cells",
-        paper: 1 as const,
-        question: `Cell Question MCQ ${i + 1}: Which structure is present in a plant cell but absent in an animal cell?`,
-        options: ["Cell membrane", "Cytoplasm", "Nucleus", "Cell wall"],
-        answer: "3",
-        explanation: "Animal cells do not have a cell wall; it is a rigid structure found in plant cells.",
-        difficulty: i % 6 === 0 ? "Top School" as const : "Standard" as const,
-        school: i % 6 === 0 ? "NYGH 2022" : undefined
-    })),
-    // Open-ended (10)
-    ...Array.from({ length: 10 }, (_, i) => ({
-        id: `cell_oe_${i + 1}`,
-        topicId: "cells",
-        paper: 2 as const,
-        question: `Cell Open-ended Question ${i + 1}: State the function of the vacuole in a plant cell.`,
-        answer: "The large central vacuole in plant cells stores water, nutrients, and waste products, and helps maintain turgor pressure to keep the cell firm.",
-        explanation: "Keywords: Storage, turgor pressure, cell firmness.",
-        difficulty: "Standard" as const
-    }))
+    ...generateMCQs("diversity", "Diversity of Matter", [
+        { q: "Which of the following is a physical property of metals?", o: ["Low melting point", "Poor conductor", "Ductility", "Brittle"], a: "2", e: "Metals can be drawn into wires." },
+        { q: "Isotopes are atoms of the same element with different numbers of...", o: ["Protons", "Neutrons", "Electrons", "Nuclei"], a: "1", e: "Neutrons change the mass but not the chemistry." },
+        { q: "Which method is best to separate sand from water?", o: ["Distillation", "Evaporation", "Filtration", "Chromatography"], a: "2", e: "Filtration removes insoluble solids." }
+    ]),
+    ...generateOEs("diversity", "Diversity of Matter", [
+        { q: "Explain how chromatography works.", a: "It separates substances based on their different solubilities in a given solvent.", e: "Keywords: Solubility, solvent front." }
+    ]),
+    ...generateMCQs("light", "Ray Model of Light", [
+        { q: "Angle of incidence is always equal to...", o: ["Angle of refraction", "Angle of reflection", "90 degrees", "Zero"], a: "1", e: "Law of reflection: i = r." },
+        { q: "Bending of light as it enters a new medium is called...", o: ["Reflection", "Refraction", "Absorption", "Diffusion"], a: "1", e: "Refraction occurs due to speed change." }
+    ]),
+    ...generateOEs("light", "Ray Model of Light", [
+        { q: "Why does light bend towards the normal in glass?", a: "Light travels slower in glass than in air, causing it to refract towards the normal.", e: "Principle of optical density." }
+    ]),
+    ...generateMCQs("cells", "Model of Cells", [
+        { q: "The 'brain' of the cell is the...", o: ["Mitochondria", "Nucleus", "Ribosome", "Vacuole"], a: "1", e: "The nucleus contains genetic info." },
+        { q: "Photosynthesis occurs in the...", o: ["Cytoplasm", "Cell wall", "Chloroplast", "Nucleus"], a: "2", e: "Chloroplasts contain chlorophyll." }
+    ]),
+    ...generateOEs("cells", "Model of Cells", [
+        { q: "Why do plant cells have fixed shapes?", a: "Because they have a rigid cell wall made of cellulose.", e: "Cell wall provides structural support." }
+    ])
 ];
