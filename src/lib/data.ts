@@ -34,11 +34,13 @@ export interface Question {
 import { batch1Questions } from "./questions_bank_p1";
 import { batch2Questions } from "./questions_bank_p2";
 import { batch3Questions } from "./questions_bank_p3";
+import { textbook2AQuestions } from "./questions_textbook_2a";
 
 export const initialQuestions: Question[] = [
     ...batch1Questions,
     ...batch2Questions,
     ...batch3Questions,
+    ...textbook2AQuestions,
     // Integrative Questions
     {
         id: "int_1",
