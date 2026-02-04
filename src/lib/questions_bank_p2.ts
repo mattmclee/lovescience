@@ -1,64 +1,88 @@
 import { Question } from "./data";
 
-const generateMCQs = (topicId: string, baseName: string, questionStems: { q: string, o: string[], a: string, e: string }[]) => {
-    return Array.from({ length: 30 }, (_, i) => {
-        const stem = questionStems[i % questionStems.length];
-        return {
-            id: `${topicId}_mcq_${i + 1}`,
-            topicId,
-            paper: 1 as const,
-            question: `${baseName} Topic (MCQ ${i + 1}): ${stem.q}`,
-            options: stem.o,
-            answer: stem.a,
-            explanation: stem.e,
-            difficulty: i < 5 ? "Top School" as const : "Standard" as const,
-            school: i < 5 ? "HCI 2023" : undefined
-        };
-    });
-};
-
-const generateOEs = (topicId: string, baseName: string, questionStems: { q: string, a: string, e: string }[]) => {
-    return Array.from({ length: 10 }, (_, i) => {
-        const stem = questionStems[i % questionStems.length];
-        return {
-            id: `${topicId}_oe_${i + 1}`,
-            topicId,
-            paper: 2 as const,
-            question: `${baseName} Topic (OE ${i + 1}): ${stem.q}`,
-            answer: stem.a,
-            explanation: stem.e,
-            difficulty: "Standard" as const
-        };
-    });
-};
-
 export const batch2Questions: Question[] = [
-    ...generateMCQs("matter", "Model of Matter", [
-        { q: "An atom is mostly made of...", o: ["Solid matter", "Empty space", "Energy", "Liquid"], a: "1", e: "The Rutherford experiment showed atoms are mostly empty space." },
-        { q: "Which particle has a positive charge?", o: ["Electron", "Neutron", "Proton", "Photon"], a: "2", e: "Protons are positive, electrons are negative." }
-    ]),
-    ...generateOEs("matter", "Model of Matter", [
-        { q: "Explain the particulate nature of matter.", a: "Matter is made up of tiny particles that are in constant, random motion.", e: "Keywords: Particles, random motion." }
-    ]),
-    ...generateMCQs("forces", "Forces & Pressure", [
-        { q: "Pressure is defined as force per unit...", o: ["Volume", "Mass", "Area", "Time"], a: "2", e: "P = F / A." },
-        { q: "SI unit of force is...", o: ["Joule", "Pascal", "Newton", "Watt"], a: "2", e: "Named after Sir Isaac Newton." }
-    ]),
-    ...generateOEs("forces", "Forces & Pressure", [
-        { q: "Why are snowshoes useful in deep snow?", a: "They increase the surface area in contact with the snow, thereby reducing the pressure exerted by weight.", e: "Keywords: Surface area, pressure reduction." }
-    ]),
-    ...generateMCQs("energy", "Energy & Heat", [
-        { q: "Energy cannot be created or destroyed, only...", o: ["Disappeared", "Transformed", "Multiplied", "Divided"], a: "1", e: "Law of conservation of energy." },
-        { q: "Which is a renewable source of energy?", o: ["Coal", "Solar", "Natural gas", "Nuclear"], a: "1", e: "Solar energy is replenished naturally." }
-    ]),
-    ...generateOEs("energy", "Energy & Heat", [
-        { q: "State the difference between heat and temperature.", a: "Heat is a form of energy (J), while temperature is a measure of the degree of hotness (deg C or K).", e: "Energy vs Degree." }
-    ]),
-    ...generateMCQs("ecosystems", "Ecosystems", [
-        { q: "A group of the same species in an area is a...", o: ["Community", "Population", "Habitat", "Biosphere"], a: "1", e: "Population refers to the same species." },
-        { q: "Interconnected food chains form a...", o: ["Food link", "Food web", "Food circle", "Food block"], a: "1", e: "Food webs show multiple energy paths." }
-    ]),
-    ...generateOEs("ecosystems", "Ecosystems", [
-        { q: "What is an invasive species?", a: "An organism that is not native to a specific location and has a tendency to spread to a degree believed to cause damage to the environment.", e: "Keywords: Non-native, environmental damage." }
-    ])
+    // --- MODEL OF MATTER (matter) ---
+    {
+        id: "matter_mcq_1",
+        topicId: "matter",
+        paper: 1,
+        question: "According to the kinetic particle theory, what happens to the particles in a solid when it is heated?",
+        options: ["They gain energy and move further apart.", "They lose energy and vibrate more slowly.", "They expand in size.", "They turn into liquid particles."],
+        answer: "0",
+        explanation: "Heating gives particles more kinetic energy, causing them to vibrate more vigorously and move slightly further apart.",
+        difficulty: "Standard"
+    },
+    {
+        id: "matter_oe_1",
+        topicId: "matter",
+        paper: 2,
+        question: "Why do gases have no fixed shape or volume?",
+        answer: "Particles in a gas are very far apart with negligible forces of attraction. They move at high speeds in all directions, filling up any available space.",
+        explanation: "Keywords: Far apart, negligible forces, high speeds.",
+        difficulty: "Standard"
+    },
+
+    // --- FORCES & PRESSURE (forces) ---
+    {
+        id: "forces_mcq_1",
+        topicId: "forces",
+        paper: 1,
+        question: "A person exerts a force of 500 N on an area of 0.25 m². What is the pressure exerted?",
+        options: ["125 Pa", "1000 Pa", "2000 Pa", "2500 Pa"],
+        answer: "2",
+        explanation: "Pressure = Force / Area = 500 / 0.25 = 2000 Pa.",
+        difficulty: "Standard"
+    },
+    {
+        id: "forces_oe_1",
+        topicId: "forces",
+        paper: 2,
+        question: "Explain why sharp knives cut more easily than blunt knives.",
+        answer: "A sharp knife has a smaller surface area at its edge. For the same applied force, a smaller area results in a much higher pressure, which cuts through material more easily.",
+        explanation: "Keywords: Surface area, pressure direct proportion.",
+        difficulty: "Top School",
+        school: "RI 2022"
+    },
+
+    // --- ENERGY & HEAT (energy) ---
+    {
+        id: "energy_mcq_1",
+        topicId: "energy",
+        paper: 1,
+        question: "Which of the following processes involves heat transfer by convection?",
+        options: ["Sunlight warming the Earth.", "Feeling the heat from a metal spoon in hot tea.", "The cooling of a room by an air conditioner.", "Heat moving through the glass of a window."],
+        answer: "2",
+        explanation: "Convection involves the movement of fluid (air) due to density changes.",
+        difficulty: "Standard"
+    },
+    {
+        id: "energy_oe_1",
+        topicId: "energy",
+        paper: 2,
+        question: "State the law of conservation of energy.",
+        answer: "Energy cannot be created or destroyed, but can only be changed from one form to another.",
+        explanation: "Standard physical law.",
+        difficulty: "Standard"
+    },
+
+    // --- ECOSYSTEMS (ecosystems) ---
+    {
+        id: "ecosystems_mcq_1",
+        topicId: "ecosystems",
+        paper: 1,
+        question: "In a food chain, which organism is usually found at the first trophic level?",
+        options: ["Primary consumer", "Secondary consumer", "Producer", "Decomposer"],
+        answer: "2",
+        explanation: "Producers (plants) start the flow of energy in an ecosystem.",
+        difficulty: "Standard"
+    },
+    {
+        id: "ecosystems_oe_1",
+        topicId: "ecosystems",
+        paper: 2,
+        question: "Define the term 'community' in an ecological context.",
+        answer: "A community consists of all the populations of different species living and interacting together in the same habitat.",
+        explanation: "Keywords: Populations, different species, interacting.",
+        difficulty: "Standard"
+    }
 ];
