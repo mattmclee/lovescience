@@ -8,7 +8,6 @@ import Results from "./Results";
 interface ExamEngineProps {
     selectedTopicIds: string[];
     paperType: "Paper 1" | "Paper 2";
-    difficulty: "Standard" | "Top School";
     onComplete: () => void;
 }
 
@@ -17,7 +16,6 @@ const COOKIE_NAME = "lovescience_wrong_answers";
 export default function ExamEngine({
     selectedTopicIds,
     paperType,
-    difficulty,
     onComplete
 }: ExamEngineProps) {
     const [questions, setQuestions] = useState<Question[]>([]);
@@ -35,8 +33,7 @@ export default function ExamEngine({
         // 2. Filter initial questions based on criteria
         const filtered = initialQuestions.filter(q =>
             selectedTopicIds.includes(q.topicId) &&
-            ((paperType === "Paper 1" && q.paper === 1) || (paperType === "Paper 2" && q.paper === 2)) &&
-            q.difficulty === difficulty
+            ((paperType === "Paper 1" && q.paper === 1) || (paperType === "Paper 2" && q.paper === 2))
         );
 
         // 3. Shuffle logic (Fisher-Yates)
@@ -55,7 +52,7 @@ export default function ExamEngine({
         const finalQuestions = [...shuffle(prevWrong), ...shuffle(others)];
         setQuestions(finalQuestions);
         setCurrentIndex(0); // Reset index whenever questions change
-    }, [selectedTopicIds, paperType, difficulty]);
+    }, [selectedTopicIds, paperType]);
 
     if (showResults) {
         return (
@@ -71,7 +68,7 @@ export default function ExamEngine({
         return (
             <div className="glass-card p-12 text-center max-w-2xl mx-auto">
                 <h3 className="text-2xl font-bold mb-4">No questions found!</h3>
-                <p className="text-slate-400 mb-8">Try selecting more topics or changing the difficulty.</p>
+                <p className="text-slate-400 mb-8">Try selecting more topics.</p>
                 <button onClick={onComplete} className="btn-primary">Back to Dashboard</button>
             </div>
         );
@@ -140,7 +137,7 @@ export default function ExamEngine({
                 <div key={currentQuestion.id} className="glass-card p-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     {currentQuestion.school && (
                         <span className="inline-block px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-widest mb-4">
-                            {currentQuestion.school} • {currentQuestion.difficulty}
+                            {currentQuestion.school}
                         </span>
                     )}
                     <h2 className="text-2xl font-semibold leading-relaxed">
